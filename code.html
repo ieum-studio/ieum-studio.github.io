@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>꼰대 판독기</title>
+    <style>
+        body {
+            font-family: 'Pretendard', sans-serif;
+            background-color: #f0f2f5;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        #container {
+            background-color: white;
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            width: 90%;
+            max-width: 400px;
+            text-align: center;
+        }
+        .hidden { display: none; }
+        .character { font-size: 80px; margin-bottom: 20px; }
+        h1 { font-size: 24px; color: #333; }
+        p { color: #666; line-height: 1.6; }
+        button {
+            background-color: #4A90E2;
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 10px;
+            font-size: 18px;
+            cursor: pointer;
+            width: 100%;
+            margin-top: 20px;
+            transition: 0.3s;
+        }
+        button:hover { background-color: #357ABD; }
+        .btn-yes { background-color: #ff4757; margin-bottom: 10px; }
+        .btn-no { background-color: #2ed573; }
+        .progress {
+            font-size: 14px;
+            color: #aaa;
+            margin-bottom: 10px;
+        }
+        .result-desc {
+            text-align: left;
+            background: #f9f9f9;
+            padding: 15px;
+            border-radius: 10px;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+
+<div id="container">
+    <!-- 1. 첫 화면 -->
+    <div id="start-screen">
+        <div class="character">🧐</div>
+        <h1>꼰대 판독기</h1>
+        <p>8개의 질문을 통해<br>당신의 꼰대력을 측정해 드립니다.</p>
+        <button onclick="startQuiz()">START</button>
+    </div>
+
+    <!-- 2. 질문 화면 -->
+    <div id="question-screen" class="hidden">
+        <div class="progress" id="progress">1 / 8</div>
+        <h2 id="question-text">질문 내용</h2>
+        <button class="btn-yes" onclick="nextQuestion(true)">YES</button>
+        <button class="btn-no" onclick="nextQuestion(false)">NO</button>
+    </div>
+
+    <!-- 3. 결과 화면 -->
+    <div id="result-screen" class="hidden">
+        <div id="result-char" class="character"></div>
+        <h1 id="result-title">결과</h1>
+        <div class="result-desc" id="result-desc">
+            <!-- 설명 3줄 -->
+        </div>
+        <button onclick="location.reload()">다시 하기</button>
+    </div>
+</div>
+
+<script>
+    const questions = [
+        "요즘 젊은 애들은 노력이 부족하다고 생각한다.",
+        "후배가 먼저 인사 안 하면 기분이 나쁘다.",
+        "사생활보다 회사(조직) 업무가 우선이다.",
+        "내 방식이 가장 효율적이고 정답이라고 믿는다.",
+        "\"나 때는 말이야~\"라는 말을 자주 사용한다.",
+        "남의 옷차림이나 태도에 참견하고 싶을 때가 많다.",
+        "회식도 업무의 연장선이니 무조건 참여해야 한다.",
+        "요즘 유행어나 문화를 보면 이해가 안 가고 답답하다."
+    ];
+
+    let currentIdx = 0;
+    let score = 0;
+
+    function startQuiz() {
+        document.getElementById('start-screen').classList.add('hidden');
+        document.getElementById('question-screen').classList.remove('hidden');
+        showQuestion();
+    }
+
+    function showQuestion() {
+        document.getElementById('progress').innerText = (currentIdx + 1) + " / 8";
+        document.getElementById('question-text').innerText = questions[currentIdx];
+    }
+
+    function nextQuestion(isYes) {
+        if (isYes) score++;
+        currentIdx++;
+
+        if (currentIdx < questions.length) {
+            showQuestion();
+        } else {
+            showResult();
+        }
+    }
+
+    function showResult() {
+        document.getElementById('question-screen').classList.add('hidden');
+        document.getElementById('result-screen').classList.remove('hidden');
+
+        const resultChar = document.getElementById('result-char');
+        const resultTitle = document.getElementById('result-title');
+        const resultDesc = document.getElementById('result-desc');
+
+        // 예(YES)를 5개 이상 선택하면 꼰대, 아니면 MZ
+        if (score >= 5) {
+            resultChar.innerText = "👴";
+            resultTitle.innerText = "당신은 본 투 비 '꼰대'";
+            resultDesc.innerHTML = `
+                • 자신의 경험을 절대적이라 믿는 경향이 강하시군요.<br>
+                • 상대방의 의견보다는 내 지시가 옳다고 생각할 때가 많습니다.<br>
+                • 가끔은 '그럴 수도 있지'라는 마음으로 경청해보는 건 어떨까요?
+            `;
+        } else {
+            resultChar.innerText = "😎";
+            resultTitle.innerText = "당신은 힙한 'MZ 마인드'";
+            resultDesc.innerHTML = `
+                • 유연한 사고방식을 가진 열린 마음의 소유자입니다.<br>
+                • 수평적인 소통을 즐기며 타인의 개성을 존중할 줄 아시네요.<br>
+                • 지금처럼 트렌디하고 쿨한 모습을 계속 유지해 주세요!
+            `;
+        }
+    }
+</script>
+
+</body>
+</html>
