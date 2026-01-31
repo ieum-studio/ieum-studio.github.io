@@ -14,10 +14,22 @@ export default function ResultScreen({ contentPayload, screenPayload, onAction }
   const retryButton = screenPayload?.retryButton ?? { label: '다시 하기', action: 'retry' };
   const handleRetry = () => onAction?.(retryButton.action);
 
+  const { titlePrefix, titleHighlight, titleHighlightVariant } = contentPayload ?? {};
+  const hasTitleHighlight = titleHighlight != null && titleHighlight !== '';
+
   return (
     <Container>
       <Character character={contentPayload?.character} />
-      <h1 className={styles.title}>{contentPayload?.title}</h1>
+      <h1 className={styles.title}>
+        {hasTitleHighlight ? (
+          <>
+            {titlePrefix}
+            <span className={styles[titleHighlightVariant] ?? styles.titleHighlight}>{titleHighlight}</span>
+          </>
+        ) : (
+          contentPayload?.title
+        )}
+      </h1>
       <div className={styles.resultDesc} role="region" aria-label="결과 설명">
         {contentPayload?.description?.map((line, i) => (
           <p key={i} className={styles.descItem}>
@@ -25,7 +37,7 @@ export default function ResultScreen({ contentPayload, screenPayload, onAction }
           </p>
         ))}
       </div>
-      <Button label={retryButton?.label} onClick={handleRetry} />
+      <Button label={retryButton?.label} variant={retryButton?.variant} onClick={handleRetry} />
     </Container>
   );
 }

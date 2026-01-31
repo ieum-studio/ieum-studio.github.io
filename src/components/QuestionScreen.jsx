@@ -4,20 +4,33 @@ import styles from './QuestionScreen.module.css';
 
 /**
  * SDUI 질문 화면 컴포넌트
- * payload: { progressLabel, yesButton, noButton }
- * 서버에서 버튼 라벨/액션을 내려줌. progressLabel은 {{current}}/{{total}} 템플릿
+ * payload: { progressLabel?, showProgressBar?, yesButton, noButton }
+ * progressLabel: "Q{{current}}" 또는 "{{current}} / {{total}}" 등 템플릿
  */
+function formatProgressLabel(template, currentIndex, totalCount) {
+  if (!template) return `${currentIndex + 1} / ${totalCount}`;
+  return template
+    .replace(/\{\{current\}\}/g, String(currentIndex + 1))
+    .replace(/\{\{total\}\}/g, String(totalCount));
+}
+
 export default function QuestionScreen({ payload, questionText, currentIndex, totalCount, onAction }) {
   if (!payload) return null;
 
-  const { yesButton, noButton } = payload;
-  const progressText = `${currentIndex + 1} / ${totalCount}`;
+  const { yesButton, noButton, showProgressBar, progressLabel } = payload;
+  const progressText = formatProgressLabel(progressLabel, currentIndex, totalCount);
+  const progressPercent = totalCount > 0 ? ((currentIndex + 1) / totalCount) * 100 : 0;
 
   const handleYes = () => onAction?.(yesButton?.action ?? 'answerYes', true);
   const handleNo = () => onAction?.(noButton?.action ?? 'answerNo', false);
 
   return (
     <Container>
+      {showProgressBar && (
+        <div className={styles.progressBarWrap} aria-hidden="true">
+          <div className={styles.progressBar} style={{ width: `${progressPercent}%` }} />
+        </div>
+      )}
       <div className={styles.progress} aria-live="polite">
         {progressText}
       </div>

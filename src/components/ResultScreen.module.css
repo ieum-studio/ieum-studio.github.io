@@ -4,6 +4,20 @@
   margin: 0 0 20px;
 }
 
+.titleHighlight {
+  font-weight: bold;
+}
+
+.flex {
+  color: #e17055;
+  font-weight: bold;
+}
+
+.beggar {
+  color: #0984e3;
+  font-weight: bold;
+}
+
 .resultDesc {
   text-align: left;
   background: #f9f9f9;

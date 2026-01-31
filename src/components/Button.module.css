@@ -40,3 +40,13 @@
 .no:hover:not(:disabled) {
   background-color: #26c065;
 }
+
+.retry {
+  background-color: #dfe6e9;
+  color: #636e72;
+  margin-top: 20px;
+}
+
+.retry:hover:not(:disabled) {
+  background-color: #b2bec3;
+}

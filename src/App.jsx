@@ -7,7 +7,14 @@ const SCREEN_START = 'start';
 const SCREEN_QUESTION = 'question';
 const SCREEN_RESULT = 'result';
 
-const SCORE_THRESHOLD = 5; // YES 5개 이상이면 꼰대
+const SCORE_THRESHOLD = 5; // YES 5개 이상이면 high 결과
+
+/** ?data=flex 이면 소비 습관 판독기(flex.json), 그 외 꼰대 판독기(data.json) */
+function getDataUrl() {
+  if (typeof window === 'undefined') return '/data.json';
+  const params = new URLSearchParams(window.location.search);
+  return params.get('data') === 'flex' ? '/flex.json' : '/data.json';
+}
 
 export default function App() {
   const [serverData, setServerData] = useState(null);
@@ -20,15 +27,18 @@ export default function App() {
   const [questionIndex, setQuestionIndex] = useState(0);
   const [score, setScore] = useState(0);
 
-  // 서버에서 data.json 을 내려준다고 가정하고 fetch
   useEffect(() => {
-    fetch('/data.json')
+    const url = getDataUrl();
+    fetch(url)
       .then((res) => {
         if (!res.ok) throw new Error('데이터를 불러올 수 없습니다.');
         return res.json();
       })
       .then((data) => {
         setServerData(data);
+        if (data?.app?.title) {
+          try { document.title = data.app.title; } catch (_) {}
+        }
         setLoading(false);
       })
       .catch((err) => {

@@ -9,13 +9,15 @@ npm install
 npm run dev
 ```
 
-브라우저에서 `http://localhost:5173` 으로 접속합니다.
+- **꼰대 판독기**: `http://localhost:5173`
+- **소비 습관 판독기** (flex.html → SDUI): `http://localhost:5173?data=flex`
 
 ## 프로젝트 구조
 
 ```
 ├── public/
-│   └── data.json          # 서버에서 내려준다고 가정한 UI/콘텐츠 데이터
+│   ├── data.json          # 꼰대 판독기 (서버 응답 가정)
+│   └── flex.json          # 소비 습관 판독기 (SDUI, ?data=flex)
 ├── src/
 │   ├── App.jsx            # 퀴즈 상태 관리 + data.json fetch 후 SDUI 렌더링
 │   ├── main.jsx
