@@ -1,0 +1,116 @@
+{
+  "app": {
+    "title": "꼰대 판독기",
+    "totalQuestions": 8
+  },
+  "screens": {
+    "start": {
+      "type": "StartScreen",
+      "payload": {
+        "character": "🧐",
+        "title": "꼰대 판독기",
+        "description": "8개의 질문을 통해\n당신의 꼰대력을 측정해 드립니다.",
+        "primaryAction": {
+          "label": "START",
+          "action": "startQuiz"
+        }
+      }
+    },
+    "question": {
+      "type": "QuestionScreen",
+      "payload": {
+        "progressLabel": "{{current}} / {{total}}",
+        "yesButton": {
+          "label": "YES",
+          "variant": "yes",
+          "action": "answerYes"
+        },
+        "noButton": {
+          "label": "NO",
+          "variant": "no",
+          "action": "answerNo"
+        }
+      }
+    },
+    "result": {
+      "type": "ResultScreen",
+      "payload": {
+        "retryButton": {
+          "label": "다시 하기",
+          "action": "retry"
+        }
+      }
+    }
+  },
+  "questions": [
+    "요즘 젊은 애들은 노력이 부족하다고 생각한다.",
+    "후배가 먼저 인사 안 하면 기분이 나쁘다.",
+    "사생활보다 회사(조직) 업무가 우선이다.",
+    "내 방식이 가장 효율적이고 정답이라고 믿는다.",
+    "\"나 때는 말이야~\"라는 말을 자주 사용한다.",
+    "남의 옷차림이나 태도에 참견하고 싶을 때가 많다.",
+    "회식도 업무의 연장선이니 무조건 참여해야 한다.",
+    "요즘 유행어나 문화를 보면 이해가 안 가고 답답하다."
+  ],
+  "ads": {
+    "enabled": true,
+    "platforms": {
+      "web": {
+        "type": "AdBannerPC",
+        "payload": {
+          "placement": "bottom",
+          "unitId": "DAN-xxxxxxxxxxxxxx",
+          "width": 728,
+          "height": 90,
+          "scriptUrl": "https://t1.daumcdn.net/kas/static/ba.min.js"
+        }
+      },
+      "mobileWeb": {
+        "type": "AdBannerMobile",
+        "payload": {
+          "placement": "bottom",
+          "unitId": "DAN-yyyyyyyyyyyyyy",
+          "width": 320,
+          "height": 50,
+          "scriptUrl": "https://t1.daumcdn.net/kas/static/ba.min.js"
+        }
+      },
+      "app": {
+        "type": "AdFullscreen",
+        "payload": {
+          "placement": "fullscreen",
+          "closeButtonLabel": "×",
+          "closeButtonAriaLabel": "광고 닫기",
+          "imageUrl": "",
+          "durationSeconds": 0
+        }
+      }
+    }
+  },
+  "results": {
+    "high": {
+      "type": "ResultContent",
+      "payload": {
+        "character": "👴",
+        "title": "당신은 본 투 비 '꼰대'",
+        "description": [
+          "자신의 경험을 절대적이라 믿는 경향이 강하시군요.",
+          "상대방의 의견보다는 내 지시가 옳다고 생각할 때가 많습니다.",
+          "가끔은 '그럴 수도 있지'라는 마음으로 경청해보는 건 어떨까요?"
+        ]
+      }
+    },
+    "low": {
+      "type": "ResultContent",
+      "payload": {
+        "character": "😎",
+        "title": "당신은 힙한 'MZ 마인드'",
+        "description": [
+          "유연한 사고방식을 가진 열린 마음의 소유자입니다.",
+          "수평적인 소통을 즐기며 타인의 개성을 존중할 줄 아시네요.",
+          "지금처럼 트렌디하고 쿨한 모습을 계속 유지해 주세요!"
+        ]
+      }
+    }
+  }
+}
