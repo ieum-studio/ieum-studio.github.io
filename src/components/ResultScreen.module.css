@@ -18,6 +18,26 @@
   font-weight: bold;
 }
 
+.resultTopicLabel {
+  font-size: 14px;
+  color: #64748b;
+  margin: 0 0 8px;
+}
+
+.resultText {
+  font-size: 24px;
+  font-weight: 900;
+  line-height: 1.5;
+  word-break: keep-all;
+  margin: 24px 0;
+  color: inherit;
+}
+
+.resultLight {
+  background: white;
+  color: #0f172a;
+}
+
 .resultDesc {
   text-align: left;
   background: #f9f9f9;

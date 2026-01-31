@@ -50,3 +50,14 @@
 .retry:hover:not(:disabled) {
   background-color: #b2bec3;
 }
+
+.topic {
+  background-color: #334155;
+  color: white;
+  text-align: left;
+  padding-left: 25px;
+}
+
+.topic:hover:not(:disabled) {
+  background-color: #475569;
+}

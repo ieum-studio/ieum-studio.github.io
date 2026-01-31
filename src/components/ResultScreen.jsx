@@ -5,7 +5,7 @@ import styles from './ResultScreen.module.css';
 
 /**
  * SDUI 결과 화면 컴포넌트
- * contentPayload: 서버에서 내려준 결과 내용 { character, title, description[] }
+ * contentPayload: { character, title, description[] } 또는 { resultTopicLabel, resultText } (한 줄 결과)
  * screenPayload: { retryButton }
  */
 export default function ResultScreen({ contentPayload, screenPayload, onAction }) {
@@ -13,6 +13,22 @@ export default function ResultScreen({ contentPayload, screenPayload, onAction }
 
   const retryButton = screenPayload?.retryButton ?? { label: '다시 하기', action: 'retry' };
   const handleRetry = () => onAction?.(retryButton.action);
+
+  const hasResultText = contentPayload?.resultText != null && contentPayload.resultText !== '';
+
+  if (hasResultText) {
+    return (
+      <Container className={contentPayload?.resultTheme === 'light' ? styles.resultLight : ''}>
+        {contentPayload?.resultTopicLabel && (
+          <p className={styles.resultTopicLabel}>{contentPayload.resultTopicLabel}</p>
+        )}
+        <p className={styles.resultText} role="status">
+          {contentPayload.resultText}
+        </p>
+        <Button label={retryButton?.label} variant={retryButton?.variant} onClick={handleRetry} />
+      </Container>
+    );
+  }
 
   const { titlePrefix, titleHighlight, titleHighlightVariant } = contentPayload ?? {};
   const hasTitleHighlight = titleHighlight != null && titleHighlight !== '';

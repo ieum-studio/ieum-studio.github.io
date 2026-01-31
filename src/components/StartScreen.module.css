@@ -9,3 +9,10 @@
   line-height: 1.6;
   margin: 0;
 }
+
+.topicList {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 16px;
+}

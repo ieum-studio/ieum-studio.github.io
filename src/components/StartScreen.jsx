@@ -5,15 +5,24 @@ import styles from './StartScreen.module.css';
 
 /**
  * SDUI 시작 화면 컴포넌트
- * 서버 payload: { character, title, description, primaryAction }
+ * 서버 payload: { character, title, description, primaryAction } 또는 { character, title, description, topics[] }
+ * topics 있으면 주제 선택 버튼 목록, 없으면 primaryAction 단일 버튼
  */
 export default function StartScreen({ payload, onAction }) {
   if (!payload) return null;
 
-  const { character, title, description, primaryAction } = payload;
-  const handleClick = () => {
+  const { character, title, description, primaryAction, topics } = payload;
+  const hasTopics = Array.isArray(topics) && topics.length > 0;
+
+  const handlePrimaryClick = () => {
     if (primaryAction?.action && onAction) {
       onAction(primaryAction.action);
+    }
+  };
+
+  const handleTopicClick = (topic) => {
+    if (onAction) {
+      onAction(topic.action ?? 'selectTopic', topic.id);
     }
   };
 
@@ -29,10 +38,23 @@ export default function StartScreen({ payload, onAction }) {
           </span>
         ))}
       </p>
-      <Button
-        label={primaryAction?.label ?? 'START'}
-        onClick={handleClick}
-      />
+      {hasTopics ? (
+        <div className={styles.topicList}>
+          {topics.map((topic) => (
+            <Button
+              key={topic.id}
+              label={topic.label}
+              variant="topic"
+              onClick={() => handleTopicClick(topic)}
+            />
+          ))}
+        </div>
+      ) : (
+        <Button
+          label={primaryAction?.label ?? 'START'}
+          onClick={handlePrimaryClick}
+        />
+      )}
     </Container>
   );
 }

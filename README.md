@@ -10,14 +10,16 @@ npm run dev
 ```
 
 - **꼰대 판독기**: `http://localhost:5173`
-- **소비 습관 판독기** (flex.html → SDUI): `http://localhost:5173?data=flex`
+- **소비 습관 판독기** (flex): `http://localhost:5173?data=flex`
+- **밈 감성 한 줄 생성기** (meme): `http://localhost:5173?data=meme`
 
 ## 프로젝트 구조
 
 ```
 ├── public/
 │   ├── data.json          # 꼰대 판독기 (서버 응답 가정)
-│   └── flex.json          # 소비 습관 판독기 (SDUI, ?data=flex)
+│   ├── flex.json          # 소비 습관 판독기 (?data=flex)
+│   └── meme.json          # 밈 한 줄 생성기 (?data=meme)
 ├── src/
 │   ├── App.jsx            # 퀴즈 상태 관리 + data.json fetch 후 SDUI 렌더링
 │   ├── main.jsx
