@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>로테이션 소개팅 플랫폼</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Pretendard:wght@400;600;700&display=swap');
+        body { font-family: 'Pretendard', sans-serif; background-color: #f3f4f6; }
+        .card { background: white; border-radius: 16px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1); }
+        .btn-rose { background-color: #f43f5e; color: white; transition: 0.2s; }
+        .btn-rose:hover { background-color: #e11d48; }
+        .hidden { display: none; }
+    </style>
+</head>
+<body>
+
+<!-- 상단 역할 전환 툴바 -->
+<div class="bg-gray-900 text-white p-2 flex justify-center space-x-6 text-xs font-bold">
+    <button onclick="switchRole('participant')" class="hover:text-rose-400 uppercase">Participant View</button>
+    <button onclick="switchRole('founder')" class="hover:text-rose-400 uppercase">Founder View</button>
+    <button onclick="switchRole('admin')" class="hover:text-rose-400 uppercase">Admin View</button>
+</div>
+
+<div class="max-w-2xl mx-auto p-4 pb-20">
+    <!-- 헤더 -->
+    <header class="flex justify-between items-center py-6">
+        <h1 class="text-2xl font-black text-rose-500 tracking-tighter">ROUNDING.</h1>
+        <div id="role-indicator" class="bg-rose-100 text-rose-600 px-3 py-1 rounded-full text-xs font-bold">참여자 모드</div>
+    </header>
+
+    <!-- 1. 참여자 화면 -->
+    <main id="view-participant">
+        <div class="mb-6">
+            <h2 class="text-lg font-bold text-gray-800">지금 신청 가능한 로테이션</h2>
+            <p class="text-sm text-gray-500">조건에 맞는 소개팅에 참여해보세요.</p>
+        </div>
+        <div id="event-list" class="space-y-4"></div>
+    </main>
+
+    <!-- 2. 창업자 화면 -->
+    <main id="view-founder" class="hidden">
+        <div class="flex justify-between items-center mb-6">
+            <h2 class="text-lg font-bold text-gray-800">내 로테이션 관리</h2>
+            <button onclick="toggleCreateForm(true)" class="btn-rose px-4 py-2 rounded-lg text-sm font-bold shadow-lg">+ 새 이벤트</button>
+        </div>
+
+        <!-- 이벤트 생성 폼 (템플릿 빌더 포함) -->
+        <div id="create-form" class="card p-6 mb-8 border-2 border-rose-200 hidden">
+            <h3 class="font-bold text-gray-800 mb-4 text-center">소개팅 상세 설정</h3>
+            <div class="space-y-4">
+                <input type="text" id="f-title" placeholder="소개팅 제목" class="w-full border p-3 rounded-xl focus:ring-2 focus:ring-rose-300 outline-none">
+                <div class="grid grid-cols-2 gap-2">
+                    <input type="date" id="f-date" class="border p-3 rounded-xl text-sm">
+                    <input type="text" id="f-loc" placeholder="장소(강남, 홍대 등)" class="border p-3 rounded-xl text-sm">
+                </div>
+                
+                <!-- 커스텀 템플릿 등록 섹션 -->
+                <div class="bg-gray-50 p-4 rounded-xl border border-dashed border-gray-300">
+                    <label class="block text-sm font-bold text-gray-700 mb-3">📋 참여자 신청 템플릿 설정</label>
+                    <div id="template-builder-list" class="space-y-2 mb-3">
+                        <!-- 추가된 질문들이 여기 나옴 -->
+                    </div>
+                    <div class="flex space-x-2">
+                        <input type="text" id="new-field-name" placeholder="질문 입력 (예: 나의 직업은?)" class="flex-1 border p-2 rounded-lg text-sm">
+                        <button onclick="addTemplateField()" class="bg-gray-800 text-white px-4 py-2 rounded-lg text-sm">항목 추가</button>
+                    </div>
+                </div>
+
+                <div class="flex space-x-2 pt-2">
+                    <button onclick="toggleCreateForm(false)" class="flex-1 bg-gray-200 py-3 rounded-xl font-bold">취소</button>
+                    <button onclick="submitEvent()" class="flex-1 btn-rose py-3 rounded-xl font-bold">등록 신청</button>
+                </div>
+            </div>
+        </div>
+
+        <div id="my-events" class="space-y-3"></div>
+    </main>
+
+    <!-- 3. 관리자 화면 -->
+    <main id="view-admin" class="hidden">
+        <h2 class="text-lg font-bold mb-4">승인 대기 중인 이벤트</h2>
+        <div id="admin-pending-list" class="space-y-4"></div>
+    </main>
+</div>
+
+<!-- 참여 신청 모달 -->
+<div id="apply-modal" class="hidden fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-end sm:items-center justify-center p-4">
+    <div class="bg-white w-full max-w-md rounded-t-3xl sm:rounded-3xl p-6 animate-slide-up">
+        <h3 id="apply-title" class="text-xl font-bold mb-1">참여 신청하기</h3>
+        <p id="apply-desc" class="text-sm text-gray-500 mb-6">창업자가 요청한 정보를 입력해주세요.</p>
+        <form id="apply-form" class="space-y-4">
+            <div id="apply-fields" class="space-y-4 max-h-[400px] overflow-y-auto pr-2"></div>
+            <div class="flex space-x-2 pt-4">
+                <button type="button" onclick="closeApplyModal()" class="flex-1 bg-gray-100 py-4 rounded-2xl font-bold">닫기</button>
+                <button type="submit" class="flex-1 btn-rose py-4 rounded-2xl font-bold">제출 완료</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+    /** --- MOCK API & DATABASE --- **/
+    let db = {
+        events: [
+            { id: 1, founderId: 'kim_ceo', title: '강남구 직장인 8:8 와인미팅', date: '2024-06-15', loc: '강남역 루프탑', template: ['나이', '직업', 'MBTI'], approved: true },
+            { id: 2, founderId: 'park_startup', title: '연남동 북토크 소개팅', date: '2024-06-20', loc: '연남동 서점', template: ['나이', '가장 좋아하는 책', '거주지'], approved: false }
+        ],
+        founderVerified: { 'kim_ceo': true, 'park_startup': false }
+    };
+
+    /** --- TEMPLATE BUILDER STATE --- **/
+    let currentTemplate = [];
+
+    function addTemplateField() {
+        const input = document.getElementById('new-field-name');
+        const fieldName = input.value.trim();
+        if (!fieldName) return;
+        
+        currentTemplate.push(fieldName);
+        input.value = '';
+        renderTemplateBuilder();
+    }
+
+    function removeTemplateField(index) {
+        currentTemplate.splice(index, 1);
+        renderTemplateBuilder();
+    }
+
+    function renderTemplateBuilder() {
+        const list = document.getElementById('template-builder-list');
+        list.innerHTML = currentTemplate.map((field, idx) => `
+            <div class="flex justify-between items-center bg-white p-2 px-3 rounded-lg border text-sm">
+                <span><span class="text-rose-500 font-bold mr-2">Q.</span>${field}</span>
+                <button onclick="removeTemplateField(${idx})" class="text-gray-400 hover:text-red-500">✕</button>
+            </div>
+        `).join('');
+    }
+
+    /** --- UI CONTROLS --- **/
+    function switchRole(role) {
+        document.querySelectorAll('main').forEach(m => m.classList.add('hidden'));
+        document.getElementById(`view-${role}`).classList.remove('hidden');
+        document.getElementById('role-indicator').innerText = 
+            role === 'participant' ? '참여자 모드' : role === 'founder' ? '창업자 모드' : '관리자 모드';
+        
+        if(role === 'participant') renderParticipant();
+        if(role === 'founder') renderFounder();
+        if(role === 'admin') renderAdmin();
+    }
+
+    // [창업자] 이벤트 등록
+    function toggleCreateForm(show) {
+        document.getElementById('create-form').classList.toggle('hidden', !show);
+        if(show) { currentTemplate = ['나이', '직업']; renderTemplateBuilder(); }
+    }
+
+    function submitEvent() {
+        const title = document.getElementById('f-title').value;
+        const founderId = 'park_startup'; // Mock 현재 로그인 유저
+        const isAutoApprove = db.founderVerified[founderId];
+
+        const newEvent = {
+            id: db.events.length + 1,
+            founderId: founderId,
+            title: title,
+            date: document.getElementById('f-date').value,
+            loc: document.getElementById('f-loc').value,
+            template: [...currentTemplate],
+            approved: isAutoApprove
+        };
+
+        db.events.push(newEvent);
+        alert(isAutoApprove ? "등록 완료!" : "첫 등록입니다. 관리자 승인 후 게시됩니다.");
+        toggleCreateForm(false);
+        renderFounder();
+    }
+
+    // [참여자] 리스트 렌더링
+    function renderParticipant() {
+        const list = document.getElementById('event-list');
+        list.innerHTML = db.events.filter(e => e.approved).map(e => `
+            <div class="card p-5 border border-gray-100 flex flex-col">
+                <h3 class="font-bold text-gray-800 text-lg mb-1">${e.title}</h3>
+                <div class="text-sm text-gray-500 mb-4">📅 ${e.date} | 📍 ${e.loc}</div>
+                <button onclick="openApplyModal(${e.id})" class="btn-rose w-full py-3 rounded-xl font-bold">참여 신청</button>
+            </div>
+        `).join('');
+    }
+
+    // [참여자] 신청 모달
+    function openApplyModal(id) {
+        const event = db.events.find(e => e.id === id);
+        document.getElementById('apply-title').innerText = event.title;
+        const fields = document.getElementById('apply-fields');
+        fields.innerHTML = event.template.map(q => `
+            <div>
+                <label class="block text-xs font-bold text-gray-500 mb-1 uppercase">${q}</label>
+                <input type="text" placeholder="${q}을(를) 입력하세요" class="w-full bg-gray-50 border p-3 rounded-xl focus:bg-white outline-none">
+            </div>
+        `).join('');
+        document.getElementById('apply-modal').classList.remove('hidden');
+    }
+
+    function closeApplyModal() { document.getElementById('apply-modal').classList.add('hidden'); }
+
+    // [관리자] 승인 제어
+    function renderAdmin() {
+        const list = document.getElementById('admin-pending-list');
+        list.innerHTML = db.events.filter(e => !e.approved).map(e => `
+            <div class="card p-5 border-l-4 border-rose-500">
+                <div class="text-xs font-bold text-rose-500 mb-1">승인 대기</div>
+                <h4 class="font-bold text-gray-800">${e.title}</h4>
+                <p class="text-sm text-gray-500 mb-4">창업자: ${e.founderId} | 필드: ${e.template.join(', ')}</p>
+                <div class="flex space-x-2">
+                    <button onclick="approveEvent(${e.id})" class="flex-1 bg-gray-900 text-white py-2 rounded-lg font-bold text-sm">승인하기</button>
+                    <button class="flex-1 bg-gray-200 py-2 rounded-lg font-bold text-sm">반려</button>
+                </div>
+            </div>
+        `).join('') || `<p class="text-center text-gray-400 py-20">대기 중인 요청이 없습니다.</p>`;
+    }
+
+    function approveEvent(id) {
+        const event = db.events.find(e => e.id === id);
+        event.approved = true;
+        db.founderVerified[event.founderId] = true; // 이후 프리패스 부여
+        alert("승인 완료! 이제 해당 창업자는 자율 등록이 가능합니다.");
+        renderAdmin();
+    }
+
+    function renderFounder() {
+        const list = document.getElementById('my-events');
+        list.innerHTML = db.events.filter(e => e.founderId === 'park_startup').map(e => `
+            <div class="card p-4 flex justify-between items-center border">
+                <div>
+                    <h4 class="font-bold text-sm">${e.title}</h4>
+                    <span class="text-[10px] font-bold ${e.approved ? 'text-green-500' : 'text-orange-400'}">
+                        ${e.approved ? '● 승인됨' : '● 검토중'}
+                    </span>
+                </div>
+                <div class="text-xs text-gray-400">${e.date}</div>
+            </div>
+        `).join('');
+    }
+
+    // 초기 실행
+    renderParticipant();
+</script>
+
+</body>
+</html>

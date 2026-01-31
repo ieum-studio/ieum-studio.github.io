@@ -1,0 +1,114 @@
+{
+  "app": {
+    "title": "로테이션 소개팅 플랫폼",
+    "type": "meeting"
+  },
+  "screens": {
+    "participant": {
+      "type": "MeetingScreen",
+      "payload": {
+        "role": "participant",
+        "title": "지금 신청 가능한 로테이션",
+        "subtitle": "조건에 맞는 소개팅에 참여해보세요.",
+        "applyButtonLabel": "참여 신청",
+        "roles": [
+          { "id": "participant", "label": "Participant View" },
+          { "id": "founder", "label": "Founder View" },
+          { "id": "admin", "label": "Admin View" }
+        ]
+      }
+    },
+    "founder": {
+      "type": "MeetingScreen",
+      "payload": {
+        "role": "founder",
+        "title": "내 로테이션 관리",
+        "createButtonLabel": "+ 새 이벤트",
+        "createFormTitle": "소개팅 상세 설정",
+        "templateLabel": "📋 참여자 신청 템플릿 설정",
+        "templatePlaceholder": "질문 입력 (예: 나의 직업은?)",
+        "addTemplateLabel": "항목 추가",
+        "cancelLabel": "취소",
+        "submitLabel": "등록 신청",
+        "roles": [
+          { "id": "participant", "label": "Participant View" },
+          { "id": "founder", "label": "Founder View" },
+          { "id": "admin", "label": "Admin View" }
+        ]
+      }
+    },
+    "admin": {
+      "type": "MeetingScreen",
+      "payload": {
+        "role": "admin",
+        "title": "승인 대기 중인 이벤트",
+        "approveLabel": "승인하기",
+        "rejectLabel": "반려",
+        "pendingBadge": "승인 대기",
+        "roles": [
+          { "id": "participant", "label": "Participant View" },
+          { "id": "founder", "label": "Founder View" },
+          { "id": "admin", "label": "Admin View" }
+        ]
+      }
+    }
+  },
+  "data": {
+    "currentFounderId": "park_startup",
+    "events": [
+      {
+        "id": 1,
+        "founderId": "kim_ceo",
+        "title": "강남구 직장인 8:8 와인미팅",
+        "date": "2024-06-15",
+        "loc": "강남역 루프탑",
+        "template": ["나이", "직업", "MBTI"],
+        "approved": true
+      },
+      {
+        "id": 2,
+        "founderId": "park_startup",
+        "title": "연남동 북토크 소개팅",
+        "date": "2024-06-20",
+        "loc": "연남동 서점",
+        "template": ["나이", "가장 좋아하는 책", "거주지"],
+        "approved": false
+      }
+    ]
+  },
+  "ads": {
+    "enabled": true,
+    "platforms": {
+      "web": {
+        "type": "AdBannerPC",
+        "payload": {
+          "placement": "bottom",
+          "unitId": "DAN-xxxxxxxxxxxxxx",
+          "width": 728,
+          "height": 90,
+          "scriptUrl": "https://t1.daumcdn.net/kas/static/ba.min.js"
+        }
+      },
+      "mobileWeb": {
+        "type": "AdBannerMobile",
+        "payload": {
+          "placement": "bottom",
+          "unitId": "DAN-yyyyyyyyyyyyyy",
+          "width": 320,
+          "height": 50,
+          "scriptUrl": "https://t1.daumcdn.net/kas/static/ba.min.js"
+        }
+      },
+      "app": {
+        "type": "AdFullscreen",
+        "payload": {
+          "placement": "fullscreen",
+          "closeButtonLabel": "×",
+          "closeButtonAriaLabel": "광고 닫기",
+          "imageUrl": "",
+          "durationSeconds": 0
+        }
+      }
+    }
+  }
+}

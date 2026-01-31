@@ -9,7 +9,7 @@ const SCREEN_RESULT = 'result';
 
 const SCORE_THRESHOLD = 5; // YES 5개 이상이면 high 결과
 
-/** ?data=flex -> flex.json, ?data=meme -> meme.json, ?data=ott -> ott.json, 그 외 data.json */
+/** ?data=flex -> flex.json, ?data=meme -> meme.json, ?data=ott -> ott.json, ?data=meeting -> meeting.json */
 function getDataUrl() {
   if (typeof window === 'undefined') return '/data.json';
   const params = new URLSearchParams(window.location.search);
@@ -17,6 +17,7 @@ function getDataUrl() {
   if (data === 'flex') return '/flex.json';
   if (data === 'meme') return '/meme.json';
   if (data === 'ott') return '/ott.json';
+  if (data === 'meeting') return '/meeting.json';
   return '/data.json';
 }
 
@@ -32,6 +33,13 @@ export default function App() {
   const [score, setScore] = useState(0);
   const [selectedTopic, setSelectedTopic] = useState(null);
 
+  // meeting 상태 (역할, 이벤트 목록, 모달/폼)
+  const [meetingRole, setMeetingRole] = useState('participant');
+  const [meetingEvents, setMeetingEvents] = useState([]);
+  const [selectedEventId, setSelectedEventId] = useState(null);
+  const [createFormOpen, setCreateFormOpen] = useState(false);
+  const [createFormData, setCreateFormData] = useState({ template: [] });
+
   useEffect(() => {
     const url = getDataUrl();
     fetch(url)
@@ -43,6 +51,9 @@ export default function App() {
         setServerData(data);
         if (data?.app?.title) {
           try { document.title = data.app.title; } catch (_) {}
+        }
+        if (data?.app?.type === 'meeting' && data?.data?.events) {
+          setMeetingEvents(JSON.parse(JSON.stringify(data.data.events)));
         }
         setLoading(false);
       })
@@ -104,6 +115,77 @@ export default function App() {
       }
       return;
     }
+
+    if (actionName === 'switchRole') {
+      setMeetingRole(value);
+      return;
+    }
+    if (actionName === 'openApply') {
+      setSelectedEventId(value);
+      return;
+    }
+    if (actionName === 'closeApply') {
+      setSelectedEventId(null);
+      return;
+    }
+    if (actionName === 'submitApply') {
+      alert('참여 신청이 완료되었습니다.');
+      setSelectedEventId(null);
+      return;
+    }
+    if (actionName === 'openCreateForm') {
+      setCreateFormOpen(true);
+      setCreateFormData({ template: ['나이', '직업'] });
+      return;
+    }
+    if (actionName === 'closeCreateForm') {
+      setCreateFormOpen(false);
+      setCreateFormData({ template: [] });
+      return;
+    }
+    if (actionName === 'addTemplateField') {
+      setCreateFormData((prev) => ({
+        ...prev,
+        template: [...(prev.template ?? []), value],
+      }));
+      return;
+    }
+    if (actionName === 'removeTemplateField') {
+      setCreateFormData((prev) => ({
+        ...prev,
+        template: (prev.template ?? []).filter((_, i) => i !== value),
+      }));
+      return;
+    }
+    if (actionName === 'submitEvent') {
+      const currentFounderId = serverData?.data?.currentFounderId ?? 'park_startup';
+      const approved = meetingEvents.some((e) => e.founderId === currentFounderId && e.approved);
+      const newId = Math.max(0, ...meetingEvents.map((e) => e.id)) + 1;
+      setMeetingEvents((prev) => [
+        ...prev,
+        {
+          id: newId,
+          founderId: currentFounderId,
+          ...value,
+          approved,
+        },
+      ]);
+      setCreateFormOpen(false);
+      setCreateFormData({ template: [] });
+      alert(approved ? '등록 완료!' : '첫 등록입니다. 관리자 승인 후 게시됩니다.');
+      return;
+    }
+    if (actionName === 'approve') {
+      setMeetingEvents((prev) =>
+        prev.map((e) => (e.id === value ? { ...e, approved: true } : e))
+      );
+      alert('승인 완료! 이제 해당 창업자는 자율 등록이 가능합니다.');
+      return;
+    }
+    if (actionName === 'reject') {
+      setMeetingEvents((prev) => prev.filter((e) => e.id !== value));
+      return;
+    }
   };
 
   if (loading) {
@@ -136,7 +218,31 @@ export default function App() {
   const isOTT = serverData?.data?.shows != null;
   const ottConfig = serverData?.screens?.main;
 
+  const isMeeting = serverData?.app?.type === 'meeting';
+  const currentFounderId = serverData?.data?.currentFounderId ?? 'park_startup';
+  const approvedEvents = meetingEvents.filter((e) => e.approved);
+  const myEvents = meetingEvents.filter((e) => e.founderId === currentFounderId);
+  const pendingEvents = meetingEvents.filter((e) => !e.approved);
+
   const renderContent = () => {
+    if (isMeeting) {
+      const config = screens[meetingRole];
+      return (
+        <SDUIRenderer
+          screenType={config?.type ?? 'MeetingScreen'}
+          payload={config?.payload}
+          meetingRole={meetingRole}
+          approvedEvents={approvedEvents}
+          myEvents={myEvents}
+          pendingEvents={pendingEvents}
+          selectedEventId={selectedEventId}
+          createFormOpen={createFormOpen}
+          createFormData={createFormData}
+          onAction={handleAction}
+        />
+      );
+    }
+
     if (isOTT && ottConfig) {
       const shows = serverData.data.shows ?? [];
       return (

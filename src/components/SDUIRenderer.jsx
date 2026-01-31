@@ -2,6 +2,7 @@ import StartScreen from './StartScreen';
 import QuestionScreen from './QuestionScreen';
 import ResultScreen from './ResultScreen';
 import OTTListScreen from './OTTListScreen';
+import MeetingScreen from './MeetingScreen';
 
 /**
  * SDUI 컴포넌트 레지스트리
@@ -12,6 +13,7 @@ const COMPONENT_MAP = {
   QuestionScreen,
   ResultScreen,
   OTTListScreen,
+  MeetingScreen,
 };
 
 /**
@@ -19,6 +21,7 @@ const COMPONENT_MAP = {
  * screenType: 서버 데이터의 type
  * payload: 해당 화면에 전달할 props
  * shows: OTTListScreen용 data.shows
+ * meeting: role, approvedEvents, myEvents, pendingEvents, selectedEventId, createFormOpen, createFormData
  */
 export default function SDUIRenderer({
   screenType,
@@ -29,6 +32,13 @@ export default function SDUIRenderer({
   totalCount,
   contentPayload,
   shows,
+  meetingRole,
+  approvedEvents,
+  myEvents,
+  pendingEvents,
+  selectedEventId,
+  createFormOpen,
+  createFormData,
 }) {
   const Component = COMPONENT_MAP[screenType];
   if (!Component) {
@@ -36,6 +46,22 @@ export default function SDUIRenderer({
       <div style={{ padding: 20, color: '#999' }}>
         알 수 없는 화면 타입: {screenType}
       </div>
+    );
+  }
+
+  if (screenType === 'MeetingScreen') {
+    return (
+      <MeetingScreen
+        role={meetingRole}
+        payload={payload}
+        approvedEvents={approvedEvents ?? []}
+        myEvents={myEvents ?? []}
+        pendingEvents={pendingEvents ?? []}
+        selectedEventId={selectedEventId}
+        createFormOpen={createFormOpen}
+        createFormData={createFormData}
+        onAction={onAction}
+      />
     );
   }
 
