@@ -1,0 +1,85 @@
+{
+  "app": {
+    "title": "이번 주 OTT 털기 🍿",
+    "type": "ott"
+  },
+  "screens": {
+    "main": {
+      "type": "OTTListScreen",
+      "payload": {
+        "weekBadge": "2월 1주차",
+        "title": "주간 OTT 신작 요약",
+        "subtitle": "볼 거 없어서 뒤적거리는 너를 위해",
+        "shareButton": {
+          "label": "🚀 이번 주 라인업 공유하기",
+          "action": "share",
+          "variant": "default"
+        }
+      }
+    }
+  },
+  "data": {
+    "shows": [
+      {
+        "platform": "netflix",
+        "name": "살인자ㅇ난감",
+        "review": "이탕이 탕탕 치고 다니는데 손석구 섹시함이 다함"
+      },
+      {
+        "platform": "tving",
+        "name": "LTNS",
+        "review": "불륜 잡으려다 내 멘탈이 먼저 잡히는 매운맛 드라마"
+      },
+      {
+        "platform": "disney",
+        "name": "킬러들의 쇼핑몰",
+        "review": "삼촌이 남긴 유산이 총알일 줄은 몰랐지"
+      },
+      {
+        "platform": "netflix",
+        "name": "성전환 연애",
+        "review": "환승연애인 줄 알았는데 도파민 농도가 500배임"
+      },
+      {
+        "platform": "tving",
+        "name": "크라임씬 리턴즈",
+        "review": "박지윤 눈빛 보면 범인 아니어도 자백하고 싶어짐"
+      }
+    ]
+  },
+  "ads": {
+    "enabled": true,
+    "platforms": {
+      "web": {
+        "type": "AdBannerPC",
+        "payload": {
+          "placement": "bottom",
+          "unitId": "DAN-xxxxxxxxxxxxxx",
+          "width": 728,
+          "height": 90,
+          "scriptUrl": "https://t1.daumcdn.net/kas/static/ba.min.js"
+        }
+      },
+      "mobileWeb": {
+        "type": "AdBannerMobile",
+        "payload": {
+          "placement": "bottom",
+          "unitId": "DAN-yyyyyyyyyyyyyy",
+          "width": 320,
+          "height": 50,
+          "scriptUrl": "https://t1.daumcdn.net/kas/static/ba.min.js"
+        }
+      },
+      "app": {
+        "type": "AdFullscreen",
+        "payload": {
+          "placement": "fullscreen",
+          "closeButtonLabel": "×",
+          "closeButtonAriaLabel": "광고 닫기",
+          "imageUrl": "",
+          "durationSeconds": 0
+        }
+      }
+    }
+  }
+}

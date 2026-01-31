@@ -12,6 +12,7 @@ npm run dev
 - **꼰대 판독기**: `http://localhost:5173`
 - **소비 습관 판독기** (flex): `http://localhost:5173?data=flex`
 - **밈 감성 한 줄 생성기** (meme): `http://localhost:5173?data=meme`
+- **이번 주 OTT 털기** (ott): `http://localhost:5173?data=ott`
 
 ## 프로젝트 구조
 
@@ -19,7 +20,8 @@ npm run dev
 ├── public/
 │   ├── data.json          # 꼰대 판독기 (서버 응답 가정)
 │   ├── flex.json          # 소비 습관 판독기 (?data=flex)
-│   └── meme.json          # 밈 한 줄 생성기 (?data=meme)
+│   ├── meme.json          # 밈 한 줄 생성기 (?data=meme)
+│   └── ott.json           # 이번 주 OTT 털기 (?data=ott)
 ├── src/
 │   ├── App.jsx            # 퀴즈 상태 관리 + data.json fetch 후 SDUI 렌더링
 │   ├── main.jsx
@@ -32,6 +34,7 @@ npm run dev
 │   │   ├── StartScreen.jsx    # 시작 화면
 │   │   ├── QuestionScreen.jsx # 질문 화면
 │   │   ├── ResultScreen.jsx   # 결과 화면
+│   │   ├── OTTListScreen.jsx  # OTT 주간 신작 목록 (?data=ott)
 │   │   └── ads/               # SDUI 광고 컴포넌트
 │   │       ├── AdRenderer.jsx   # 플랫폼별 광고 렌더러
 │   │       ├── AdBannerPC.jsx   # 카카오 애드핏 PC (하단)

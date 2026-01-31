@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>이번 주 OTT 털기 🍿</title>
+    <style>
+        :root {
+            --netflix: #E50914;
+            --disney: #006E99;
+            --tving: #FF153C;
+            --bg: #050505;
+            --card-bg: #1a1a1a;
+        }
+        body {
+            font-family: 'Pretendard', sans-serif;
+            background-color: var(--bg);
+            color: white;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        header {
+            text-align: center;
+            margin-top: 40px;
+            margin-bottom: 30px;
+        }
+        .week-badge {
+            background: var(--netflix);
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: bold;
+            margin-bottom: 10px;
+            display: inline-block;
+        }
+        h1 { font-size: 28px; margin: 10px 0; letter-spacing: -1px; }
+        
+        /* 신작 카드 스타일 */
+        .container { width: 100%; max-width: 450px; }
+        .ott-card {
+            background: var(--card-bg);
+            border-radius: 20px;
+            padding: 20px;
+            margin-bottom: 15px;
+            border-left: 5px solid #444;
+            transition: 0.3s;
+        }
+        .ott-card:hover { transform: scale(1.02); }
+        .netflix { border-left-color: var(--netflix); }
+        .disney { border-left-color: var(--disney); }
+        .tving { border-left-color: var(--tving); }
+
+        .platform { font-size: 12px; font-weight: bold; opacity: 0.7; margin-bottom: 5px; }
+        .title { font-size: 18px; font-weight: 800; margin-bottom: 10px; color: #fff; }
+        .meme-review {
+            background: rgba(255,255,255,0.05);
+            padding: 12px;
+            border-radius: 12px;
+            font-size: 15px;
+            color: #00ff88; /* 포인트 컬러 */
+            font-weight: 600;
+            line-height: 1.4;
+        }
+
+        /* 하단 액션 버튼 */
+        .footer-btns {
+            margin-top: 30px;
+            width: 100%;
+            max-width: 450px;
+        }
+        .btn-share {
+            width: 100%;
+            padding: 18px;
+            background: white;
+            color: black;
+            border: none;
+            border-radius: 15px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <div class="week-badge" id="week-date">2월 1주차</div>
+    <h1>주간 OTT 신작 요약</h1>
+    <p style="color: #888; font-size: 15px;">볼 거 없어서 뒤적거리는 너를 위해</p>
+</header>
+
+<div class="container" id="content-list">
+    <!-- 자바스크립트로 카드가 생성됩니다 -->
+</div>
+
+<div class="footer-btns">
+    <button class="btn-share" onclick="copyToClipboard()">
+        🚀 이번 주 라인업 공유하기
+    </button>
+</div>
+
+<script>
+    /* 
+       🛠 매주 여기만 수정하세요! 
+       platform: 'netflix', 'disney', 'tving' 중 선택
+    */
+    const weeklyData = {
+        date: "2월 1주차",
+        shows: [
+            {
+                platform: "netflix",
+                name: "살인자ㅇ난감",
+                review: "이탕이 탕탕 치고 다니는데 손석구 섹시함이 다함"
+            },
+            {
+                platform: "tving",
+                name: "LTNS",
+                review: "불륜 잡으려다 내 멘탈이 먼저 잡히는 매운맛 드라마"
+            },
+            {
+                platform: "disney",
+                name: "킬러들의 쇼핑몰",
+                review: "삼촌이 남긴 유산이 총알일 줄은 몰랐지"
+            },
+            {
+                platform: "netflix",
+                name: "성전환 연애",
+                review: "환승연애인 줄 알았는데 도파민 농도가 500배임"
+            },
+            {
+                platform: "tving",
+                name: "크라임씬 리턴즈",
+                review: "박지윤 눈빛 보면 범인 아니어도 자백하고 싶어짐"
+            }
+        ]
+    };
+
+    // 데이터를 화면에 그리는 함수
+    function renderWeekly() {
+        document.getElementById('week-date').innerText = weeklyData.date;
+        const listContainer = document.getElementById('content-list');
+        
+        const html = weeklyData.shows.map(show => `
+            <div class="ott-card ${show.platform}">
+                <div class="platform">${show.platform.toUpperCase()} NEW</div>
+                <div class="title">${show.name}</div>
+                <div class="meme-review">" ${show.review} "</div>
+            </div>
+        `).join('');
+        
+        listContainer.innerHTML = html;
+    }
+
+    // 공유 기능 (간단 복사)
+    function copyToClipboard() {
+        const text = `🍿 ${weeklyData.date} OTT 신작 요약\n\n` + 
+                     weeklyData.shows.map(s => `- ${s.name}: ${s.review}`).join('\n');
+        
+        navigator.clipboard.writeText(text).then(() => {
+            alert("라인업이 복사되었습니다! 카톡에 붙여넣으세요.");
+        });
+    }
+
+    // 실행
+    renderWeekly();
+</script>
+
+</body>
+</html>

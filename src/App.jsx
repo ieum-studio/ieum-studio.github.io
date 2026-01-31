@@ -9,13 +9,14 @@ const SCREEN_RESULT = 'result';
 
 const SCORE_THRESHOLD = 5; // YES 5개 이상이면 high 결과
 
-/** ?data=flex -> flex.json, ?data=meme -> meme.json, 그 외 data.json */
+/** ?data=flex -> flex.json, ?data=meme -> meme.json, ?data=ott -> ott.json, 그 외 data.json */
 function getDataUrl() {
   if (typeof window === 'undefined') return '/data.json';
   const params = new URLSearchParams(window.location.search);
   const data = params.get('data');
   if (data === 'flex') return '/flex.json';
   if (data === 'meme') return '/meme.json';
+  if (data === 'ott') return '/ott.json';
   return '/data.json';
 }
 
@@ -87,6 +88,22 @@ export default function App() {
       setScore(0);
       return;
     }
+
+    if (actionName === 'share') {
+      const ottPayload = serverData?.screens?.main?.payload;
+      const weekBadge = ottPayload?.weekBadge ?? '';
+      const shows = serverData?.data?.shows ?? [];
+      const text =
+        `🍿 ${weekBadge} OTT 신작 요약\n\n` +
+        shows.map((s) => `- ${s.name}: ${s.review}`).join('\n');
+      if (typeof navigator?.clipboard?.writeText === 'function') {
+        navigator.clipboard.writeText(text).then(
+          () => alert('라인업이 복사되었습니다! 카톡에 붙여넣으세요.'),
+          () => {}
+        );
+      }
+      return;
+    }
   };
 
   if (loading) {
@@ -116,7 +133,22 @@ export default function App() {
   const adsConfig = serverData.ads ?? null;
   const showBannerAd = adsConfig?.enabled && (platform === 'web' || platform === 'mobileWeb');
 
+  const isOTT = serverData?.data?.shows != null;
+  const ottConfig = serverData?.screens?.main;
+
   const renderContent = () => {
+    if (isOTT && ottConfig) {
+      const shows = serverData.data.shows ?? [];
+      return (
+        <SDUIRenderer
+          screenType={ottConfig.type ?? 'OTTListScreen'}
+          payload={ottConfig.payload}
+          shows={shows}
+          onAction={handleAction}
+        />
+      );
+    }
+
     if (currentScreen === SCREEN_START) {
       const config = screens.start;
       return (
