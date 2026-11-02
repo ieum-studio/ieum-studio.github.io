@@ -1,0 +1,10 @@
+[
+  {
+    "relation": ["delegate_permission/common.handle_all_urls"],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "studio.ieum.onetap",
+      "sha256_cert_fingerprints": ["A0:1D:B6:3E:2F:57:56:96:3E:22:59:0F:27:0F:C5:A3:0A:41:35:6C:EE:35:1D:72:1A:5B:14:50:0F:57:75:56"]
+    }
+  }
+]

@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>페이지를 찾을 수 없어요 · 일행</title>
+<meta name="robots" content="noindex">
+<meta name="referrer" content="no-referrer">
+<meta property="og:title" content="일행 방 초대">
+<meta name="description" content="일행 안내 페이지입니다.">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/style.css">
+</head>
+<body>
+<header class="site-head"><div class="inner">
+<a class="logo company" href="/index.html"></a>
+<nav aria-label="주요 메뉴"><a href="/support.html">고객지원</a></nav>
+</div></header>
+<main class="inner">
+<div id="missing">
+<h1>페이지를 찾을 수 없어요</h1>
+<p class="sub">주소를 다시 확인해 주세요.</p>
+<noscript><p class="sub">초대 링크로 오셨다면 받은 메시지의 숫자 6자리를 일행 앱의 초대 코드로 참가에 입력하세요.</p></noscript>
+<p><a href="/index.html">첫 페이지로 가기</a></p>
+</div>
+<div id="invite" hidden>
+<h1>일행 방에 초대받았어요</h1>
+<p class="code-value" id="code"></p>
+<p><button class="copy" id="copy" type="button">코드 복사</button></p>
+<p class="sub">일행 앱의 초대 코드로 참가에 이 코드를 입력하세요.</p>
+<div class="note">일행은 아직 내부 시험 중이라 스토어에서 받을 수 없습니다.</div>
+</div>
+</main>
+<footer class="site-foot"><div class="inner">
+<span>© <span class="company"></span></span>
+<a href="/delete-account.html">계정 삭제</a>
+<a href="/support.html">고객지원</a>
+</div></footer>
+<script>
+// 초대 경로만 읽는다. 서버 호출, 저장, 외부 자원 없음. /j/ 뒤 숫자 6자리일 때만 코드를 보인다.
+(function () {
+  var m = location.pathname.match(/^\/j\/([0-9]{6})\/?$/);
+  if (!m) return;
+  var code = m[1];
+  var shown = code.slice(0, 3) + " " + code.slice(3);
+  document.title = "일행 방 초대";
+  document.getElementById("code").textContent = shown;
+  document.getElementById("missing").hidden = true;
+  document.getElementById("invite").hidden = false;
+  var button = document.getElementById("copy");
+  button.addEventListener("click", function () {
+    function done() { button.textContent = "복사했어요"; }
+    function select() {
+      var range = document.createRange();
+      range.selectNodeContents(document.getElementById("code"));
+      var s = window.getSelection();
+      s.removeAllRanges();
+      s.addRange(range);
+      button.textContent = "코드를 길게 눌러 복사하세요";
+    }
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(code).then(done, select);
+    } else {
+      select();
+    }
+  });
+})();
+</script>
+</body>
+</html>
