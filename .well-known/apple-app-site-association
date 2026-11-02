@@ -2,8 +2,23 @@
   "applinks": {
     "details": [
       {
-        "appIDs": ["RXAU933793.studio.ieum.onetap"],
-        "components": [{ "/": "/j/*" }]
+        "appIDs": [
+          "RXAU933793.studio.ieum.onetap"
+        ],
+        "components": [
+          {
+            "/": "/j/",
+            "?": {
+              "c": "??????"
+            }
+          },
+          {
+            "/": "/j/??????"
+          },
+          {
+            "/": "/j/??????/"
+          }
+        ]
       }
     ]
   }

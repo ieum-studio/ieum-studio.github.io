@@ -3,8 +3,15 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>일행 초대</title>
-<meta name="description" content="일행 방 초대 안내입니다.">
+<title>일행 방 초대</title>
+<meta name="description" content="일행 앱의 방 초대 링크입니다.">
+<meta name="referrer" content="no-referrer">
+<meta property="og:type" content="website">
+<meta property="og:title" content="일행 방 초대">
+<meta property="og:description" content="일행 앱에서 초대 코드로 참가하세요.">
+<meta property="og:image" content="https://ieum-studio.github.io/og-invite.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
 <meta name="robots" content="noindex">
 <link rel="icon" href="../favicon.svg" type="image/svg+xml">
 <link rel="stylesheet" href="../style.css">
@@ -16,14 +23,46 @@
 </div></header>
 <main class="inner">
 <h1>일행 방에 초대받았어요</h1>
-<div class="code" role="img" aria-label="초대 코드 자리"><span></span><span></span><span></span><span></span><span></span><span></span></div>
-<p class="sub">받은 메시지의 숫자 6자리를 일행 앱의 "초대 코드로 참가"에 입력하세요.</p>
-<div class="note">링크로 앱을 바로 여는 기능은 준비 중입니다. 일행은 내부 베타 시험 중이라 스토어에서 받을 수 없습니다.</div>
+<div class="code" id="slots" role="img" aria-label="초대 코드 자리"><span></span><span></span><span></span><span></span><span></span><span></span></div>
+<p class="code-value" id="code" hidden></p>
+<p id="copy-row" hidden><button class="copy" id="copy" type="button">코드 복사</button></p>
+<p class="sub" id="guide">받은 메시지의 숫자 6자리를 일행 앱의 초대 코드로 참가에 입력하세요.</p>
+<div class="note">일행은 아직 내부 시험 중이라 스토어에서 받을 수 없습니다.</div>
 </main>
 <footer class="site-foot"><div class="inner">
 <span>© <span class="company"></span></span>
 <a href="../delete-account.html">계정 삭제</a>
 <a href="../support.html">고객지원</a>
 </div></footer>
+<script>
+// 주소의 c 값만 읽는다. 서버 호출, 저장, 외부 자원 없음. 숫자 6자리일 때만 코드를 보인다.
+(function () {
+  var code = new URLSearchParams(location.search).get("c");
+  if (!code || !/^[0-9]{6}$/.test(code)) return;
+  var el = document.getElementById("code");
+  el.textContent = code.slice(0, 3) + " " + code.slice(3);
+  el.hidden = false;
+  document.getElementById("slots").hidden = true;
+  document.getElementById("copy-row").hidden = false;
+  document.getElementById("guide").textContent = "일행 앱의 초대 코드로 참가에 이 코드를 입력하세요.";
+  var button = document.getElementById("copy");
+  button.addEventListener("click", function () {
+    function done() { button.textContent = "복사했어요"; }
+    function select() {
+      var range = document.createRange();
+      range.selectNodeContents(el);
+      var s = window.getSelection();
+      s.removeAllRanges();
+      s.addRange(range);
+      button.textContent = "코드를 길게 눌러 복사하세요";
+    }
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(code).then(done, select);
+    } else {
+      select();
+    }
+  });
+})();
+</script>
 </body>
 </html>
