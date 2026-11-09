@@ -1,5 +1,5 @@
 /* 회사 표기는 여기 한 곳만 고치면 모든 페이지의 화면 글자가 바뀐다. */
-:root { --company: "이음 스튜디오"; }
+:root { --company: "이음"; }
 
 /* 색과 모양은 일행 앱 디자인 토큰을 따른다 (남색 바탕, 주황 강조, 둥근 카드). */
 :root {
@@ -173,3 +173,16 @@ details p { color: var(--text2); }
 }
 
 main.home { padding: 0; }
+
+/* 약관·처리방침 (docs/legal/legal2html.py --site 로 만든 페이지) */
+.legal { overflow-wrap: break-word; }
+.legal h2 { margin: 36px 0 10px; padding-top: 16px; border-top: 1px solid var(--line); }
+.legal h3 { font-size: 1.0625rem; margin: 20px 0 6px; }
+.legal-toc { background: var(--surface); border-radius: var(--radius-sm); padding: 14px 18px; margin: 16px 0 8px; box-shadow: var(--shadow); }
+.legal-toc h2 { border: 0; margin: 0 0 6px; padding: 0; font-size: 1rem; }
+.legal-toc ol, .legal-toc ul { list-style: none; padding: 0; margin: 0; columns: 2 14rem; }
+.legal-toc li { margin-bottom: 4px; }
+.legal .tbl { overflow-x: auto; margin: 10px 0 16px; }
+.legal table { border-collapse: collapse; width: 100%; font-size: .9375rem; background: var(--surface); }
+.legal th, .legal td { border: 1px solid var(--line); padding: 8px 10px; text-align: left; vertical-align: top; }
+.legal th { background: var(--muted); }
