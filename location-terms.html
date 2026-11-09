@@ -9,7 +9,7 @@
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
-<!-- 원본: ieum-agent/docs/legal/location-terms-v1.0.txt (docs/legal/legal2html.py --site 로 만든다. 직접 고치지 않는다) -->
+<!-- 원본: ieum-agent/docs/legal/location-terms-v1.1.txt (docs/legal/legal2html.py --site 로 만든다. 직접 고치지 않는다) -->
 <header class="site-head"><div class="inner">
 <a class="logo company" href="index.html"></a>
 <nav aria-label="주요 메뉴"><a href="support.html">고객지원</a></nav>
@@ -49,12 +49,12 @@
 <li>방에 참가해 있고 위치 공유가 켜진 동안에만 수집합니다.</li>
 <li>앱 화면이 꺼져 있거나 앱이 뒤에 있어도 수집이 이어질 수 있습니다. 이때 아이폰은 위치 사용 표시를, 안드로이드는 상시 알림을 보입니다.</li>
 <li>잠시 숨기기(30분, 1시간) 동안에는 내 기기가 위치를 계속 받지만 운영자 서버로 보내지 않습니다. 받은 위치는 내 기기에서 일행과의 거리를 계산하고, 숨기기가 끝나는 때 바로 다시 보내는 데에만 씁니다. &quot;다시 켤 때까지 숨기기&quot;를 고르면 위치 받기도 멈춥니다.</li>
-<li>방장(방장이 찍은 목적지가 있으면 그 목적지)에서 3km 넘게 떨어지면 내 기기는 정확한 위치를 서버로 보내지 않고, 대략 거리(아래 4항)만 보냅니다. 거리 계산은 내 기기 안에서 합니다.</li>
+<li>방장의 위치에서 3km 넘게 떨어지면 내 기기는 정확한 위치를 서버로 보내지 않고, 대략 거리(아래 4항)만 보냅니다. 거리 계산은 내 기기 안에서 합니다.</li>
 </ul>
 <h2 id="s4">4. 수집 항목</h2>
 <ul>
 <li>정확한 위치: 위도, 경도, 정확도 반경, 측정 시각, 서버 갱신 시각</li>
-<li>대략 거리: 기준점(방장 또는 방장이 찍은 목적지)까지의 거리를 3~10km는 1km, 10~50km는 5km 단위로 내린 값, 50km를 넘으면 &quot;50km 넘게&quot;. 기준 종류(방장·목적지)와 서버 시각. 방향과 좌표는 없습니다.</li>
+<li>대략 거리: 방장의 위치까지의 거리를 3~10km는 1km, 10~50km는 5km 단위로 내린 값, 50km를 넘으면 &quot;50km 넘게&quot;. 그리고 서버 시각. 방향과 좌표는 없습니다.</li>
 <li>공유 상태: 공유 여부, 잠시 숨기기 종료 예정 시각</li>
 <li>지도 마크: 마크를 찍은 지점의 위도·경도, 찍은 방법(내 위치에 찍기 또는 지도에서 찍기)</li>
 </ul>
@@ -114,7 +114,7 @@
 <ul>
 <li>공고일: 2026-11-09</li>
 <li>시행일: 2026-11-09</li>
-<li>변경 이력: location-v1.0 2026-11-09 처음 시행</li>
+<li>변경 이력: location-v1.0 2026-11-09 처음 시행, location-v1.1 2026-11-09 멀리 기준을 방장 위치로 단순화</li>
 </ul>
 </main>
 <footer class="site-foot"><div class="inner">
