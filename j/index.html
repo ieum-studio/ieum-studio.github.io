@@ -8,7 +8,7 @@
 <meta name="referrer" content="no-referrer">
 <meta property="og:type" content="website">
 <meta property="og:title" content="일행 방 초대">
-<meta property="og:description" content="일행 앱에서 초대 코드로 참가하세요.">
+<meta property="og:description" content="일행 앱에서 방에 참여하세요.">
 <meta property="og:image" content="https://ieum-studio.github.io/og-invite.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
@@ -26,7 +26,8 @@
 <div class="code" id="slots" role="img" aria-label="초대 코드 자리"><span></span><span></span><span></span><span></span><span></span><span></span></div>
 <p class="code-value" id="code" hidden></p>
 <p id="copy-row" hidden><button class="copy" id="copy" type="button">코드 복사</button></p>
-<p class="sub" id="guide">받은 메시지의 숫자 6자리를 일행 앱의 초대 코드로 참가에 입력하세요.</p>
+<p class="sub" id="guide">받은 메시지의 숫자 6자리를 일행 앱의 [방 참여하기]에 입력하세요.</p>
+<p class="sub"><strong>방장 기준 3km 안에서만 정확한 위치가 공유돼요.</strong> 3km보다 멀어지면 "멀리 있어요"와 대략 거리만 보여요.</p>
 <div class="note">일행은 아직 내부 시험 중이라 스토어에서 받을 수 없습니다.</div>
 </main>
 <footer class="site-foot"><div class="inner">
@@ -45,7 +46,7 @@
   el.hidden = false;
   document.getElementById("slots").hidden = true;
   document.getElementById("copy-row").hidden = false;
-  document.getElementById("guide").textContent = "일행 앱의 초대 코드로 참가에 이 코드를 입력하세요.";
+  document.getElementById("guide").textContent = "일행 앱의 [방 참여하기]에 이 코드를 입력하세요.";
   var button = document.getElementById("copy");
   button.addEventListener("click", function () {
     function done() { button.textContent = "복사했어요"; }
