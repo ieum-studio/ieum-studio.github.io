@@ -24,6 +24,7 @@
 }
 
 * { box-sizing: border-box; }
+[hidden] { display: none !important; }
 html { -webkit-text-size-adjust: 100%; scroll-padding-top: 16px; }
 body { margin: 0; background: var(--bg); color: var(--text); font-family: var(--font); line-height: 1.7; word-break: keep-all; }
 .company::before { content: var(--company); }
@@ -55,6 +56,7 @@ li { margin-bottom: 6px; }
   color: var(--on-brand); padding-block: 40px 56px; overflow: hidden;
 }
 .hero .inner { display: grid; gap: 40px; align-items: center; }
+.hero .inner > * { min-width: 0; }
 .eyebrow { display: inline-flex; align-items: center; gap: 8px; color: var(--brand-2); font-size: .875rem; font-weight: 600; border: 1px solid var(--brand-line); border-radius: 999px; padding: 4px 12px; }
 .eyebrow::before { content: ""; width: 8px; height: 8px; border-radius: 50%; background: var(--signal); }
 .hero h1 { font-size: 2.125rem; margin: 16px 0 12px; }
@@ -113,7 +115,7 @@ li { margin-bottom: 6px; }
 .steps b { display: block; }
 .steps span { color: var(--text2); }
 .platforms { list-style: none; padding: 0; margin: 0; display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-.platforms li { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius-sm); padding: 16px; margin: 0; }
+.platforms li { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius-sm); padding: 16px; margin: 0; min-width: 0; overflow-wrap: anywhere; }
 .platforms b { display: block; }
 .platforms span { color: var(--text3); font-size: .875rem; }
 .tag { display: inline-block; margin-top: 6px; font-size: .8125rem; font-weight: 600; padding: 1px 10px; border-radius: 999px; background: var(--muted); color: var(--text2); }
@@ -125,6 +127,18 @@ li { margin-bottom: 6px; }
 .store { display: inline-flex; align-items: center; gap: 8px; background: var(--muted); color: var(--text2); padding: 10px 16px; border-radius: 14px; font-weight: 600; }
 .cta .store { background: var(--brand-raised); color: var(--brand-2); border: 1px solid var(--brand-line); }
 .store small { font-weight: 500; opacity: .8; }
+.stores > *, .actions > * { max-width: 100%; text-align: center; }
+.stores .store { min-height: 48px; justify-content: center; }
+.stores .store[aria-disabled="true"] { cursor: default; }
+.band h2 + .features { margin-top: 24px; }
+
+/* 초대 페이지 "앱이 없다면" (글자 버튼, 공식 배지 그림 없음) */
+.get { margin-top: 28px; padding-top: 20px; border-top: 1px solid var(--line); }
+.get h2 { font-size: 1.125rem; margin: 0 0 8px; }
+.get-steps { color: var(--text2); }
+.get .stores { margin: 16px 0 12px; }
+.btn-store { background: var(--text); color: var(--bg); }
+.small { font-size: .875rem; }
 .contact { display: grid; gap: 6px; }
 .mail { font-size: 1.125rem; font-weight: 700; overflow-wrap: anywhere; }
 
@@ -149,7 +163,7 @@ details p { color: var(--text2); }
 .copy { background: var(--action); color: var(--on-action); border: 0; border-radius: 999px; font: inherit; font-weight: 700; min-height: 48px; padding: 10px 22px; cursor: pointer; }
 
 /* 발 */
-.site-foot { background: var(--surface); border-top: 1px solid var(--line); color: var(--text3); font-size: .875rem; }
+.site-foot { background: var(--surface); border-top: 1px solid var(--line); color: var(--text3); font-size: .875rem; overflow-wrap: anywhere; }
 .site-foot .inner { padding-block: 24px 32px; display: grid; gap: 10px; }
 .foot-links { display: flex; flex-wrap: wrap; gap: 0 18px; }
 .site-foot a { color: var(--text2); min-height: 44px; display: inline-flex; align-items: center; }
